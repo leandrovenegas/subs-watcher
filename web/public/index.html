@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SubsPipeline — Panel de control para subtitulado automático de video">
+  <title>SubsPipeline — Control Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ─── Header ────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__brand">
+        <div class="header__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="header__title">SubsPipeline</h1>
+          <p class="header__subtitle">Subtitulado automático</p>
+        </div>
+      </div>
+      <div class="header__status" id="connectionStatus">
+        <span class="status-dot"></span>
+        <span class="status-text">Conectando…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Main Content ──────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Auto Mode Card -->
+    <section class="card card--auto-mode">
+      <div class="card__header">
+        <div class="card__header-left">
+          <div class="card__icon card__icon--auto">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="card__title">Modo Automático</h2>
+            <p class="card__desc" id="autoModeDesc">Procesamiento automático de videos en cola</p>
+          </div>
+        </div>
+        <label class="switch" id="autoModeSwitch">
+          <input type="checkbox" id="autoModeToggle">
+          <span class="switch__slider"></span>
+          <span class="switch__label switch__label--on">ON</span>
+          <span class="switch__label switch__label--off">OFF</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Two-column layout -->
+    <div class="grid">
+
+      <!-- Column Left: Subtitle Style Editor -->
+      <section class="card card--editor">
+        <div class="card__header">
+          <div class="card__header-left">
+            <div class="card__icon card__icon--style">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 7 4 4 20 4 20 7"/>
+                <line x1="9" y1="20" x2="15" y2="20"/>
+                <line x1="12" y1="4" x2="12" y2="20"/>
+              </svg>
+            </div>
+            <h2 class="card__title">Estilos de Subtítulo</h2>
+          </div>
+          <button class="btn btn--save" id="saveTemplateBtn" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Guardar
+          </button>
+        </div>
+
+        <div class="editor">
+          <!-- Subtitle Mode -->
+          <div class="editor__field">
+            <label class="editor__label">Modo de subtítulos</label>
+            <div class="editor__mode-selector">
+              <label class="editor__radio-btn">
+                <input type="radio" name="subtitleMode" value="lipsync" checked>
+                <span>LIPSYNC (Palabra por palabra)</span>
+              </label>
+              <label class="editor__radio-btn">
+                <input type="radio" name="subtitleMode" value="normal">
+                <span>Normal (Segmentos)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Font Family -->
+          <div class="editor__field">
+            <label class="editor__label" for="fontFamily">Fuente</label>
+            <select class="editor__select" id="fontFamily">
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Verdana">Verdana</option>
+              <option value="Tahoma">Tahoma</option>
+              <option value="Trebuchet MS">Trebuchet MS</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Courier New">Courier New</option>
+              <option value="Impact">Impact</option>
+              <option value="Comic Sans MS">Comic Sans MS</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Open Sans">Open Sans</option>
+              <option value="Noto Sans">Noto Sans</option>
+            </select>
+          </div>
+
+          <!-- Font Size -->
+          <div class="editor__field">
+            <label class="editor__label" for="fontSize">
+              Tamaño
+              <span class="editor__value" id="fontSizeValue">24</span>
+            </label>
+            <div class="editor__range-group">
+              <input type="range" class="editor__range" id="fontSize" min="12" max="72" value="24">
+              <input type="number" class="editor__number" id="fontSizeNum" min="12" max="72" value="24">
+            </div>
+          </div>
+
+          <!-- Font Color -->
+          <div class="editor__field editor__field--inline">
+            <div class="editor__color-group">
+              <label class="editor__label" for="fontColor">Color de texto</label>
+              <div class="editor__color-wrapper">
+                <input type="color" class="editor__color" id="fontColor" value="#FFFFFF">
+                <span class="editor__color-hex" id="fontColorHex">#FFFFFF</span>
+              </div>
+            </div>
+            <div class="editor__color-group">
+              <label class="editor__label" for="outlineColor">Color de borde</label>
+              <div class="editor__color-wrapper">
+                <input type="color" class="editor__color" id="outlineColor" value="#000000">
+                <span class="editor__color-hex" id="outlineColorHex">#000000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outline Width -->
+          <div class="editor__field">
+            <label class="editor__label" for="outlineWidth">
+              Grosor de borde
+              <span class="editor__value" id="outlineWidthValue">2</span>
+            </label>
+            <div class="editor__range-group">
+              <input type="range" class="editor__range" id="outlineWidth" min="0" max="8" step="0.5" value="2">
+              <input type="number" class="editor__number" id="outlineWidthNum" min="0" max="8" step="0.5" value="2">
+            </div>
+          </div>
+
+          <!-- Subtitle Effects (Fase 3) -->
+          <div class="editor__field">
+            <label class="editor__label" for="subtitleEffect">Efecto especial (Redes Sociales)</label>
+            <select class="editor__select" id="subtitleEffect">
+              <option value="none">Ninguno</option>
+              <option value="pop">Pop / Bounce (Escala)</option>
+              <option value="fade">Fade (Desvanecimiento)</option>
+              <option value="slide">Slide Up (Deslizar arriba)</option>
+              <option value="glow">Highlight / Glow (Brillo activo)</option>
+              <option value="typewriter">Typewriter (Máquina de escribir)</option>
+              <option value="shake">Shake (Sacudida leve)</option>
+            </select>
+          </div>
+
+          <!-- Position (Vertical Slider) -->
+          <div class="editor__field">
+            <label class="editor__label" for="verticalPosition">
+              Posición vertical (Y)
+              <span class="editor__value" id="verticalPositionValue">10%</span>
+            </label>
+            <div class="editor__range-group">
+              <input type="range" class="editor__range" id="verticalPosition" min="5" max="95" step="1" value="10">
+              <input type="number" class="editor__number" id="verticalPositionNum" min="5" max="95" value="10">
+            </div>
+            <div class="editor__position-group">
+              <button class="editor__pos-btn" data-pos-val="90">Arriba (90%)</button>
+              <button class="editor__pos-btn" data-pos-val="50">Centro (50%)</button>
+              <button class="editor__pos-btn active" data-pos-val="10">Abajo (10%)</button>
+            </div>
+          </div>
+
+          <!-- Line Wrap (Disabled in Lipsync) -->
+          <div class="editor__field" id="maxLinesField">
+            <label class="editor__label" for="maxLines">Máximo de líneas</label>
+            <select class="editor__select" id="maxLines">
+              <option value="1">1 línea (Wrap estricto)</option>
+              <option value="2">2 líneas (Estándar)</option>
+              <option value="3">3 líneas (Máximo)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Column Right: Live Subtitle Preview & Queue -->
+      <div class="grid__column-right">
+        
+        <!-- Live Preview card -->
+        <section class="card card--preview" id="videoPreviewContainer">
+          <div class="card__header">
+            <div class="card__header-left">
+              <div class="card__icon card__icon--auto" style="background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </div>
+              <h2 class="card__title" id="previewTitle">Vista Previa Sincronizada</h2>
+            </div>
+            <label class="btn btn--file" for="testVideoFile" title="Cargar video local para probar preview">
+              Cargar Local
+              <input type="file" id="testVideoFile" accept="video/*" style="display:none">
+            </label>
+          </div>
+
+          <div class="preview__video-wrapper" id="videoWrapper">
+            <!-- Loader Overlay for queue selection -->
+            <div class="preview__video-status" id="videoStatusOverlay">
+              <span class="preview__status-icon">📁</span>
+              <span class="preview__status-text">Selecciona un video de la cola o carga uno local</span>
+            </div>
+            
+            <video class="preview__video-player" id="previewPlayer" controls muted loop style="display:none">
+            </video>
+            <!-- SUBTITLE OVERLAY -->
+            <div class="preview__overlay-subtitle" id="subtitleOverlay" style="display:none">
+              <span class="preview__overlay-text" id="subtitleOverlayText"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Queue card -->
+        <section class="card card--queue" style="margin-top: 20px;">
+          <div class="card__header">
+            <div class="card__header-left">
+              <div class="card__icon card__icon--queue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+              </div>
+              <h2 class="card__title">Cola de Procesamiento</h2>
+            </div>
+            <button class="btn btn--refresh" id="refreshQueueBtn" title="Actualizar cola">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="queue" id="queueContainer">
+            <div class="queue__empty">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <line x1="12" y1="2" x2="12" y2="22"/>
+              </svg>
+              <p>No hay videos en cola</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

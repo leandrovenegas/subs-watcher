@@ -1,0 +1,24 @@
+{
+  "name": "subs-pipeline",
+  "version": "1.0.0",
+  "description": "Sistema automático de subtitulado de video con faster-whisper y FFmpeg",
+  "main": "watcher.js",
+  "scripts": {
+    "start": "node watcher.js",
+    "web": "node web/server.js",
+    "dev": "node watcher.js & node web/server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "chokidar": "^3.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "ws": "^8.21.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "vicente",
+  "license": "MIT"
+}
